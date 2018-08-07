@@ -18,7 +18,7 @@ func main() {
 		commandPush,
 		commandPost,
 	}
-	app.Version = fmt.Sprintf("%s (%s)", version, revision)
+	app.Version = fmt.Sprintf("%s (rev:%s)", version, revision)
 	err := app.Run(os.Args)
 	if err != nil {
 		if err != errCommandHelp {
