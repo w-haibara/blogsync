@@ -131,6 +131,9 @@ var commandPull = &cli.Command{
 var commandPush = &cli.Command{
 	Name:  "push",
 	Usage: "Push local entries to remote",
+	Flags: []cli.Flag{
+		&cli.BoolFlag{Name: "draft"},
+	},
 	Action: func(c *cli.Context) error {
 		first := c.Args().First()
 		if first == "" {
@@ -163,6 +166,10 @@ var commandPush = &cli.Command{
 			bc := conf.Get(remoteRoot)
 			if bc == nil {
 				return fmt.Errorf("cannot find blog for %s", path)
+			}
+
+			if c.Bool("draft") {
+				entry.IsDraft = true
 			}
 
 			_, err = newBroker(bc).UploadFresh(entry)
