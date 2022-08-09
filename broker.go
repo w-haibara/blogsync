@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
+	"strings"
 	"time"
 
 	"github.com/motemen/go-wsse"
@@ -66,7 +67,12 @@ func (b *broker) LocalPath(e *entry) string {
 	if b.OmitDomain == nil || !*b.OmitDomain {
 		paths = append(paths, b.RemoteRoot)
 	}
-	paths = append(paths, e.URL.Path+extension)
+	urlPath := e.URL.Path
+	if b.PathFormat == "entry_id" {
+		entryID := e.EditURL[strings.LastIndex(e.EditURL, "/")+1:]
+		urlPath = urlPath[:strings.LastIndex(urlPath, "/")+1] + entryID
+	}
+	paths = append(paths, urlPath+extension)
 	return filepath.Join(paths...)
 }
 

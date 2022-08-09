@@ -19,6 +19,7 @@ type blogConfig struct {
 	Username   string
 	Password   string
 	OmitDomain *bool `yaml:"omit_domain"`
+	PathFormat string `yaml:"path_format"`
 }
 
 func loadConfig(r io.Reader) (*config, error) {
@@ -87,6 +88,9 @@ func mergeBlogConfig(b1, b2 *blogConfig) *blogConfig {
 	}
 	if b1.OmitDomain == nil {
 		b1.OmitDomain = b2.OmitDomain
+	}
+	if b1.PathFormat == "" {
+		b1.PathFormat = b2.PathFormat
 	}
 	return b1
 }
